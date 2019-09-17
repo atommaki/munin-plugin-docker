@@ -1,0 +1,111 @@
+#!/usr/bin/env python3
+
+import docker
+import json
+import sys
+import os
+
+class munindocker:
+    def _get_genieric_config(self):
+        return (
+            'graph_category Docker\n'
+        )
+
+    def get_config_containers(self):
+        return (
+            self._get_genieric_config() + 
+            'graph_title Docker containers\n'
+            'graph_args -l 0\n'
+            'graph_vlabel number of containers\n'
+            'all_containers.label all containers\n'
+            'running_containers.label running containers'
+        )
+
+    def get_config_images(self):
+        return (
+            self._get_genieric_config() + 
+            'graph_title Docker images\n'
+            'graph_args -l 0\n'
+            'graph_vlabel number of images\n'
+            'images.label docker images'
+        )
+
+    def get_config_layerssize(self):
+        return (
+            self._get_genieric_config() + 
+            'graph_title Docker LayersSize\n'
+            'graph_args -l 0\n'
+            'graph_vlabel Byte\n'
+            'layerssize.label LayersSize'
+        )
+
+    def get_config_memory(self):
+        return (
+            self._get_genieric_config() + 
+            'graph_title Docker containers memory usage\n'
+            'graph_args -l 0\n'
+            'graph_vlabel Byte\n'
+            'total.label total\n'
+            'avg.label avg\n'
+            'max.label max'
+        )
+
+    def _get_containers_list(self, all = False):
+        client = docker.from_env()
+        return client.containers.list(all)
+
+    def get_values_containers(self):
+        return (
+            f"running_containers.value {len(self._get_containers_list())}\n"
+            f"all_containers.value {len(self._get_containers_list(all=True))}"
+        )
+
+    def get_values_images(self):
+        client = docker.from_env()
+        return (
+            f"images.value {len(client.images.list())}"
+        )
+
+    def get_values_layerssize(self):
+        client = docker.from_env()
+        return (
+            f"layerssize.value {client.df()['LayersSize']}"
+        )
+
+    def get_values_memory(self):
+        memory_usage=[]
+        for container in self._get_containers_list(all=True):
+            memory_usage.append(int(container.stats(stream=False)["memory_stats"]["stats"]["rss"]))
+        return (
+            f"total.value {sum(memory_usage)}\n"
+            f"avg.value {sum(memory_usage)/len(memory_usage)}\n"
+            f"max.value {max(memory_usage)}\n"
+        )
+
+metrics = [ 'containers', 'images', 'memory', 'layerssize' ]
+
+if os.path.basename(__file__) == 'docker_stat':
+    print(f"Make symlinks to this file as:", file=sys.stderr)
+    for m in metrics:
+        print(f"    docker_stat_{m}", file=sys.stderr)
+    sys.exit(1)
+
+
+metric=os.path.basename(__file__).replace('docker_stat_','')
+
+if metric not in metrics:
+    print(f"Unknown docker stat type: {metric}", file=sys.stderr)
+    print("Valid types:", file=sys.stderr)
+    for m in metrics:
+        print(f"    {m}", file=sys.stderr)
+    sys.exit(1)
+
+md=munindocker()
+get_munin_config=getattr(md, f"get_config_{metric}")
+get_munin_values=getattr(md, f"get_values_{metric}")
+
+if len(sys.argv) > 1 and sys.argv[1] == 'config':
+    print(get_munin_config())
+else:
+    print(get_munin_values())
+
