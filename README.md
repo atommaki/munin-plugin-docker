@@ -14,6 +14,10 @@ And of course you already have munin-node on the host.
 ### Installing the plugin
 copy `docker_stat` to the `/usr/share/munin/plugins/` directory
 
+Make it executable:
+```
+chmod a+x /usr/share/munin/plugins/
+```
 
 create symlinks to it
 ```
