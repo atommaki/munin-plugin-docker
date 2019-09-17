@@ -16,7 +16,7 @@ copy `docker_stat` to the `/usr/share/munin/plugins/` directory
 
 Make it executable:
 ```
-chmod a+x /usr/share/munin/plugins/
+chmod a+x /usr/share/munin/plugins/docker_stat
 ```
 
 create symlinks to it
