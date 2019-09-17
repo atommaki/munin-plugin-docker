@@ -17,10 +17,10 @@ copy `docker_stat` to the `/usr/share/munin/plugins/` directory
 
 create symlinks to it
 ```
-ln -s /usr/share/munin/plugins/ /etc/munin/plugins/docker_stat_containers
-ln -s /usr/share/munin/plugins/ /etc/munin/plugins/docker_stat_images
-ln -s /usr/share/munin/plugins/ /etc/munin/plugins/docker_stat_memory
-ln -s /usr/share/munin/plugins/ /etc/munin/plugins/docker_stat_layerssize
+ln -s /usr/share/munin/plugins/docker_stat /etc/munin/plugins/docker_stat_containers
+ln -s /usr/share/munin/plugins/docker_stat /etc/munin/plugins/docker_stat_images
+ln -s /usr/share/munin/plugins/docker_stat /etc/munin/plugins/docker_stat_memory
+ln -s /usr/share/munin/plugins/docker_stat /etc/munin/plugins/docker_stat_layerssize
 ```
 
 Run on of the scripts to see if all the required python modules are installed:
