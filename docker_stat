@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 
+# https://github.com/atommaki/munin-plugin-docker
+
 import docker
 import sys
 import os
@@ -73,7 +75,7 @@ class munindocker:
 
     def get_values_memory(self):
         memory_usage=[]
-        for container in self._get_containers_list(all=True):
+        for container in self._get_containers_list():
             memory_usage.append(int(container.stats(stream=False)["memory_stats"]["stats"]["rss"]))
         return (
             f"total.value {sum(memory_usage)}\n"
