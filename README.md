@@ -3,11 +3,13 @@
 munin plugin to monitor docker, based on python3. It's designed to see overall statistics of your docker environment, not to monitor individual containers.
 
 [Metrics](#metrics)
+
 [Example graphs](#example_graphs)
+
 [Installation](#installation)
 
-<a name="metrics"/>
 ## Metrics
+<a name="metrics"/>
 
 The plugin uses the [Docker SDK for Python](https://docker-py.readthedocs.io/en/stable/), all metrics comes from the API.
   * containers: number of containers, running and all
@@ -15,8 +17,8 @@ The plugin uses the [Docker SDK for Python](https://docker-py.readthedocs.io/en/
   * images: number of images (without intermediate image layers)
   * layerssize: good question, it is what the docker API gives back ([df call](https://docker-py.readthedocs.io/en/stable/api.html#module-docker.api.daemon)) as LayersSize :) Not very well documented, I guess this is the overall size of the images.
 
-<a name="example_graphs"/>
 ## Example graphs
+<a name="example_graphs"/>
 
 ![Number of containers](https://github.com/atommaki/munin-plugin-docker/raw/master/screenshots/munin-plugin-docker-screenshot-containers.png "Number of containers")
 
@@ -27,8 +29,9 @@ The plugin uses the [Docker SDK for Python](https://docker-py.readthedocs.io/en/
 ![Docker LayersSize](https://github.com/atommaki/munin-plugin-docker/raw/master/screenshots/munin-plugin-docker-screenshot-containers.png "Docker LayersSize")
 
 
-<a name="installation"/>
 ## Installation
+<a name="installation"/>
+
 ### Prerequisites
 The plugin requires python3 and some python modules. You can install them on Ubuntu 18.04:
 ```
