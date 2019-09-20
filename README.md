@@ -12,6 +12,9 @@ munin plugin to monitor docker, based on python3. It's designed to see overall s
 The plugin uses the [Docker SDK for Python](https://docker-py.readthedocs.io/en/stable/), all metrics comes from the API.
   * containers: number of containers, running and all
   * memory: memory usage (RSS) of the containers
+    * total: memory usage of all the containers together (sum(list))
+    * max: the highest memory usage of the containers (max(list))
+    * avg: average memory usage of the containers (total/n)
   * images: number of images (without intermediate image layers)
   * layerssize: good question, it is what the docker API gives back ([df call](https://docker-py.readthedocs.io/en/stable/api.html#module-docker.api.daemon)) as LayersSize :) Not very well documented, I guess this is the overall size of the images.
 
