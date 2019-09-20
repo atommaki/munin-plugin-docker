@@ -18,7 +18,7 @@ The plugin uses the [Docker SDK for Python](https://docker-py.readthedocs.io/en/
 
 ![Number of containers](https://github.com/atommaki/munin-plugin-docker/raw/master/screenshots/munin-plugin-docker-screenshot-containers.png "Number of containers")
 
-![Containers memory usage](https://github.com/atommaki/munin-plugin-docker/raw/master/screenshots/munin-plugin-docker-screenshot-containers.png "Containers memory usage")
+![Containers memory usage](https://github.com/atommaki/munin-plugin-docker/raw/master/screenshots/munin-plugin-docker-screenshot-memory.png "Containers memory usage")
 
 ![Number of images](https://github.com/atommaki/munin-plugin-docker/raw/master/screenshots/munin-plugin-docker-screenshot-images.png "Number of images")
 
