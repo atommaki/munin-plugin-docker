@@ -24,7 +24,7 @@ The plugin uses the [Docker SDK for Python](https://docker-py.readthedocs.io/en/
 
 ![Number of images](https://github.com/atommaki/munin-plugin-docker/raw/master/screenshots/munin-plugin-docker-screenshot-images.png "Number of images")
 
-![Docker LayersSize](https://github.com/atommaki/munin-plugin-docker/raw/master/screenshots/munin-plugin-docker-screenshot-containers.png "Docker LayersSize")
+![Docker LayersSize](https://github.com/atommaki/munin-plugin-docker/raw/master/screenshots/munin-plugin-docker-screenshot-layerssize.png "Docker LayersSize")
 
 
 ## Installation
