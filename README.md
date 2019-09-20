@@ -2,11 +2,9 @@
 
 munin plugin to monitor docker, based on python3. It's designed to see overall statistics of your docker environment, not to monitor individual containers.
 
-[Metrics](#metrics)
-
-[Example graphs](#example_graphs)
-
-[Installation](#installation)
+  * [Metrics](#metrics)
+  * [Example graphs](#example_graphs)
+  * [Installation](#installation)
 
 ## Metrics
 <a name="metrics"/>
