@@ -1,6 +1,28 @@
 # munin-plugin-docker
 
-munin plugin to monitor docker
+munin plugin to monitor docker, based on python3. It's designed to see overall statistics of your docker environment, not to monitor individual containers.
+
+[Metrics](#Metrics)
+[Example graphs](#Example graphs)
+[Installation](#Installation)
+
+##Metrics
+
+The plugin uses the [Docker SDK for Python](https://docker-py.readthedocs.io/en/stable/), all metrics comes from the API.
+  * containers: number of containers, running and all
+  * memory: memory usage (RSS) of the containers
+  * images: number of images (without intermediate image layers)
+  * layerssize: good question, it is what the docker API gives back ([df call](https://docker-py.readthedocs.io/en/stable/api.html#module-docker.api.daemon)) as LayersSize :) Not very well documented, I guess this is the overall size of the images.
+
+##Example graphs
+![Number of containers](https://github.com/atommaki/munin-plugin-docker/raw/master/screenshots/munin-plugin-docker-screenshot-containers.png "Number of containers")
+
+![Containers memory usage](https://github.com/atommaki/munin-plugin-docker/raw/master/screenshots/munin-plugin-docker-screenshot-containers.png "Containers memory usage")
+
+![Number of images](https://github.com/atommaki/munin-plugin-docker/raw/master/screenshots/munin-plugin-docker-screenshot-images.png "Number of images")
+
+![Docker LayersSize](https://github.com/atommaki/munin-plugin-docker/raw/master/screenshots/munin-plugin-docker-screenshot-containers.png "Docker LayersSize")
+
 
 ## Installation
 ### Prerequisites
