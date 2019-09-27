@@ -11,6 +11,10 @@ munin plugin to monitor docker, based on python3. It's designed to see overall s
 
 The plugin uses the [Docker SDK for Python](https://docker-py.readthedocs.io/en/stable/), all metrics comes from the API.
   * containers: number of containers, running and all
+  * containers uptime: uptime of the running containers
+    * max: uptime of the oldest running container
+    * min: uptime of the youngest running container
+    * median: median of the uptimes
   * memory: memory usage (RSS) of the containers
     * total: memory usage of all the containers together (sum(list))
     * max: the highest memory usage of the containers (max(list))
@@ -52,6 +56,7 @@ chmod a+x /usr/share/munin/plugins/docker_stat
 create symlinks to it
 ```
 ln -s /usr/share/munin/plugins/docker_stat /etc/munin/plugins/docker_stat_containers
+ln -s /usr/share/munin/plugins/docker_stat /etc/munin/plugins/docker_stat_containers_uptime
 ln -s /usr/share/munin/plugins/docker_stat /etc/munin/plugins/docker_stat_images
 ln -s /usr/share/munin/plugins/docker_stat /etc/munin/plugins/docker_stat_memory
 ln -s /usr/share/munin/plugins/docker_stat /etc/munin/plugins/docker_stat_layerssize

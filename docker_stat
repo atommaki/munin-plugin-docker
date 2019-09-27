@@ -5,6 +5,8 @@
 import docker
 import sys
 import os
+import datetime
+import statistics
 
 class munindocker:
     def _get_genieric_config(self):
@@ -14,12 +16,23 @@ class munindocker:
 
     def get_config_containers(self):
         return (
-            self._get_genieric_config() + 
+            self._get_genieric_config() +
             'graph_title Docker containers\n'
             'graph_args -l 0\n'
             'graph_vlabel number of containers\n'
             'all_containers.label all containers\n'
             'running_containers.label running containers'
+        )
+
+    def get_config_containers_uptime(self):
+        return (
+            self._get_genieric_config() +
+            'graph_title Docker containers uptime\n'
+            'graph_args -l 0\n'
+            'graph_vlabel uptime hours\n'
+            'uptime_max.label max\n'
+            'uptime_min.label min\n'
+            'uptime_median.label median'
         )
 
     def get_config_images(self):
@@ -60,6 +73,19 @@ class munindocker:
             f"running_containers.value {len(self._get_containers_list())}\n"
             f"all_containers.value {len(self._get_containers_list(all=True))}"
         )
+    def get_values_containers_uptime(self):
+        uptime_list = []
+        dclient_low = docker.APIClient()
+        dtimeformat="%Y-%m-%dT%H:%M:%S"
+        for container in self._get_containers_list():
+            inspect = dclient_low.inspect_container(container.name)
+            if "State" in inspect.keys() and "StartedAt" in inspect["State"].keys():
+                uptime_list.append((datetime.datetime.utcnow()-datetime.datetime.strptime(inspect["State"]["StartedAt"].split('.')[0],'%Y-%m-%dT%H:%M:%S')).total_seconds()/3600)
+        return (
+            f"uptime_max.value {max(uptime_list)}\n"
+            f"uptime_min.value {min(uptime_list)}\n"
+            f"uptime_median.value {statistics.median(uptime_list)}\n"
+        )
 
     def get_values_images(self):
         client = docker.from_env()
@@ -85,7 +111,7 @@ class munindocker:
             f"max.value {max(memory_usage)}\n"
         )
 
-metrics = [ 'containers', 'images', 'memory', 'layerssize' ]
+metrics = [ 'containers', 'containers_uptime', 'images', 'memory', 'layerssize' ]
 
 if os.path.basename(__file__) == 'docker_stat':
     print(f"Make symlinks to this file as:", file=sys.stderr)
