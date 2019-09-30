@@ -48,41 +48,38 @@ sudo python3 -m pip install docker
 And of course you already have munin-node on the host.
 
 ### Installing the plugin
-copy [`docker_stat`](https://raw.githubusercontent.com/atommaki/munin-plugin-docker/master/docker_stat) to the `/usr/share/munin/plugins/` directory:
+ * copy [`docker_stat`](https://raw.githubusercontent.com/atommaki/munin-plugin-docker/master/docker_stat) to the `/usr/share/munin/plugins/` directory:
 ```
 sudo wget https://raw.githubusercontent.com/atommaki/munin-plugin-docker/master/docker_stat -O /usr/share/munin/plugins/docker_stat
 ```
 
-Make it executable:
+ * Make it executable:
 ```
-chmod a+x /usr/share/munin/plugins/docker_stat
-```
-
-create symlinks to it
-```
-ln -s /usr/share/munin/plugins/docker_stat /etc/munin/plugins/docker_stat_containers
-ln -s /usr/share/munin/plugins/docker_stat /etc/munin/plugins/docker_stat_containers_uptime
-ln -s /usr/share/munin/plugins/docker_stat /etc/munin/plugins/docker_stat_images
-ln -s /usr/share/munin/plugins/docker_stat /etc/munin/plugins/docker_stat_memory
-ln -s /usr/share/munin/plugins/docker_stat /etc/munin/plugins/docker_stat_layerssize
+sudo chmod a+x /usr/share/munin/plugins/docker_stat
 ```
 
-Run on of the scripts to see if all the required python modules are installed:
+ * create symlinks to it
 ```
-/etc/munin/plugins/docker_stat_memory
+sudo ln -s /usr/share/munin/plugins/docker_stat /etc/munin/plugins/docker_stat_containers
+sudo ln -s /usr/share/munin/plugins/docker_stat /etc/munin/plugins/docker_stat_containers_uptime
+sudo ln -s /usr/share/munin/plugins/docker_stat /etc/munin/plugins/docker_stat_images
+sudo ln -s /usr/share/munin/plugins/docker_stat /etc/munin/plugins/docker_stat_memory
+sudo ln -s /usr/share/munin/plugins/docker_stat /etc/munin/plugins/docker_stat_layerssize
 ```
 
-
-configure munin to run the plugin as root:
+ * Run one of the scripts to see if all the required python modules are installed:
 ```
-cat <<EOF > /etc/munin/plugin-conf.d/docker
+sudo /etc/munin/plugins/docker_stat_memory
+```
+
+ * configure munin to run the plugin as `root` user. Add the following lines to `/etc/munin/plugin-conf.d/docker`:
+```
 [docker*]
 user root
-EOF
 ```
 
-Restart munin-node:
+ * Restart munin-node:
 ```
-systemctl restart munin-node.service
+sudo systemctl restart munin-node.service
 ```
 
