@@ -48,7 +48,7 @@ sudo python3 -m pip install docker
 And of course you already have munin-node on the host.
 
 ### Installing the plugin
-copy `docker_stat` to the `/usr/share/munin/plugins/` directory
+copy [`docker_stat`](https://raw.githubusercontent.com/atommaki/munin-plugin-docker/master/docker_stat) to the `/usr/share/munin/plugins/` directory
 
 Make it executable:
 ```
