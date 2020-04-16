@@ -81,6 +81,8 @@ class munindocker:
             inspect = dclient_low.inspect_container(container.name)
             if "State" in inspect.keys() and "StartedAt" in inspect["State"].keys():
                 uptime_list.append((datetime.datetime.utcnow()-datetime.datetime.strptime(inspect["State"]["StartedAt"].split('.')[0],'%Y-%m-%dT%H:%M:%S')).total_seconds()/3600)
+        if len(uptime_list) == 0:
+            return None
         return (
             f"uptime_max.value {max(uptime_list)}\n"
             f"uptime_min.value {min(uptime_list)}\n"
@@ -105,6 +107,8 @@ class munindocker:
             # TODO 1: what if the container stopped in the meantime?
             # TODO 2: parallel processing would make it faster, currently one run can take seconds
             memory_usage.append(int(container.stats(stream=False)["memory_stats"]["stats"]["rss"]))
+        if len(memory_usage) == 0:
+            return None
         return (
             f"total.value {sum(memory_usage)}\n"
             f"avg.value {sum(memory_usage)/len(memory_usage)}\n"
@@ -136,5 +140,7 @@ get_munin_values=getattr(md, f"get_values_{metric}")
 if len(sys.argv) > 1 and sys.argv[1] == 'config':
     print(get_munin_config())
 else:
-    print(get_munin_values())
+    values =  get_munin_values()
+    if values != None:
+        print(values)
 
