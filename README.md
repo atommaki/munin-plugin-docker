@@ -40,12 +40,20 @@ The plugin uses the [Docker SDK for Python](https://docker-py.readthedocs.io/en/
 <a name="installation"/>
 
 ### Prerequisites
-The plugin requires python3 and some python modules. You can install them on Ubuntu 18.04:
+The plugin requires python3 and some python modules. And of course you already have munin-node on the host.
+
+on Ubuntu 18.04:
 ```
 sudo apt install python3 python3-pip
+```
+on CentOS 7
+```
+sudo yum install python3 python3-pip
+```
+on both platform:
+```
 sudo python3 -m pip install docker
 ```
-And of course you already have munin-node on the host.
 
 ### Installing the plugin
  * copy [`docker_stat`](https://raw.githubusercontent.com/atommaki/munin-plugin-docker/master/docker_stat) to the `/usr/share/munin/plugins/` directory:
