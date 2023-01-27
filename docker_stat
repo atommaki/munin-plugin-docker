@@ -106,7 +106,7 @@ class munindocker:
         for container in self._get_containers_list():
             # TODO 1: what if the container stopped in the meantime?
             # TODO 2: parallel processing would make it faster, currently one run can take seconds
-            memory_usage.append(int(container.stats(stream=False)["memory_stats"]["stats"]["rss"]))
+            memory_usage.append(int(container.stats(stream=False)["memory_stats"]["usage"]))
         if len(memory_usage) == 0:
             return None
         return (
