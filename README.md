@@ -15,7 +15,7 @@ The plugin uses the [Docker SDK for Python](https://docker-py.readthedocs.io/en/
     * max: uptime of the oldest running container
     * min: uptime of the youngest running container
     * median: median of the uptimes
-  * memory: memory usage (RSS) of the containers
+  * memory: memory usage of the containers
     * total: memory usage of all the containers together (sum(list))
     * max: the highest memory usage of the containers (max(list))
     * avg: average memory usage of the containers (total/n)
