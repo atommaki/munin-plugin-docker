@@ -7,8 +7,24 @@ import sys
 import os
 import datetime
 import statistics
+import re
+import subprocess
+import json
 
 class munindocker:
+    def _convert_to_bytes(self,size_str):
+        size_str = size_str.strip().upper()
+        size_map = {'B': 1, 'KB': 1000, 'MB': 1000**2, 'GB': 1000**3, 'TB': 1000**4}
+        # docker scales with 1000, but munin graphs scale with 1024 :/
+
+        match = re.match(r"(\d+(\.\d+)?)\s*([KMGTP]?B)", size_str)
+        if match:
+            size_value = float(match.group(1))
+            size_unit = match.group(3)
+            return int(size_value * size_map[size_unit])
+        else:
+            return 0  # Return 0 if size is '0B' or not found
+
     def _get_genieric_config(self):
         return (
             'graph_category Docker\n'
@@ -51,6 +67,26 @@ class munindocker:
             'graph_args -l 0\n'
             'graph_vlabel Byte\n'
             'layerssize.label LayersSize'
+        )
+
+    def get_config_volumes_n(self):
+        return (
+            self._get_genieric_config() + 
+            'graph_title Docker Volumes (number)\n'
+            'graph_args -l 0\n'
+            'graph_vlabel number of volumes\n'
+            'volumes_n_all.label all volumes\n'
+            'volumes_n_active.label active volumes'
+        )
+
+    def get_config_volumes_size(self):
+        return (
+            self._get_genieric_config() + 
+            'graph_title Docker Volumes (size)\n'
+            'graph_args -l 0\n'
+            'graph_vlabel Byte\n'
+            'volumes_size.label summarized local volume size\n'
+            'volumes_reclaimable.label reclaimable size'
         )
 
     def get_config_memory(self):
@@ -101,6 +137,29 @@ class munindocker:
             f"layerssize.value {client.df()['LayersSize']}"
         )
 
+    def get_values_volumes_n(self):
+        result = subprocess.run(['docker', 'system', 'df', '--format', 'json'], stdout=subprocess.PIPE, text=True)
+        docker_df_list = json.loads("[" + result.stdout.strip().replace('\n', ',') + "]")
+        for docker_df in docker_df_list:
+            if docker_df['Type'] != 'Local Volumes':
+                continue
+            return (
+                f"volumes_n_all.value { docker_df['TotalCount'] }\n"
+                f"volumes_n_active.value { docker_df['Active'] }"
+            )
+
+    def get_values_volumes_size(self):
+        result = subprocess.run(['docker', 'system', 'df', '--format', 'json'], stdout=subprocess.PIPE, text=True)
+        docker_df_list = json.loads("[" + result.stdout.strip().replace('\n', ',') + "]")
+        for docker_df in docker_df_list:
+            if docker_df['Type'] != 'Local Volumes':
+                continue
+            return (
+                f"volumes_size.value { self._convert_to_bytes(docker_df['Size']) }\n"
+                f"volumes_reclaimable.value  { self._convert_to_bytes(docker_df['Reclaimable']) }"
+            )
+
+
     def get_values_memory(self):
         memory_usage=[]
         for container in self._get_containers_list():
@@ -115,7 +174,7 @@ class munindocker:
             f"max.value {max(memory_usage)}\n"
         )
 
-metrics = [ 'containers', 'containers_uptime', 'images', 'memory', 'layerssize' ]
+metrics = [ 'containers', 'containers_uptime', 'images', 'memory', 'layerssize', 'volumes_n', 'volumes_size' ]
 
 if os.path.basename(__file__) == 'docker_stat':
     print(f"Make symlinks to this file as:", file=sys.stderr)

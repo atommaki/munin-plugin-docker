@@ -21,6 +21,8 @@ The plugin uses the [Docker SDK for Python](https://docker-py.readthedocs.io/en/
     * avg: average memory usage of the containers (total/n)
   * images: number of images (without intermediate image layers)
   * layerssize: good question, it is what the docker API gives back ([df call](https://docker-py.readthedocs.io/en/stable/api.html#module-docker.api.daemon)) as LayersSize :) Not very well documented, I guess this is the overall size of the images.
+  * volumes_n: number of docker volumes
+  * volumes_size: used disk space by docker local volumes (`docker system df`)
 
 ## Example graphs
 <a name="example_graphs"/>
@@ -40,19 +42,11 @@ The plugin uses the [Docker SDK for Python](https://docker-py.readthedocs.io/en/
 <a name="installation"/>
 
 ### Prerequisites
-The plugin requires python3 and some python modules. And of course you already have munin-node on the host.
+The plugin requires python3 and some python modules. And of course you already have to have munin-node on the host.
 
-on Ubuntu 18.04:
+on Ubuntu 22.04 (or higher):
 ```
-sudo apt install python3 python3-pip
-```
-on CentOS 7
-```
-sudo yum install python3 python3-pip
-```
-on both platform:
-```
-sudo python3 -m pip install docker
+sudo apt install python3 python3-docker
 ```
 
 ### Installing the plugin
@@ -73,6 +67,8 @@ sudo ln -s /usr/share/munin/plugins/docker_stat /etc/munin/plugins/docker_stat_c
 sudo ln -s /usr/share/munin/plugins/docker_stat /etc/munin/plugins/docker_stat_images
 sudo ln -s /usr/share/munin/plugins/docker_stat /etc/munin/plugins/docker_stat_memory
 sudo ln -s /usr/share/munin/plugins/docker_stat /etc/munin/plugins/docker_stat_layerssize
+sudo ln -s /usr/share/munin/plugins/docker_stat /etc/munin/plugins/docker_stat_volumes_n
+sudo ln -s /usr/share/munin/plugins/docker_stat /etc/munin/plugins/docker_stat_volumes_size
 ```
 
  * Run one of the scripts to see if all the required python modules are installed:
