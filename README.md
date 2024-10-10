@@ -42,7 +42,7 @@ The plugin uses the [Docker SDK for Python](https://docker-py.readthedocs.io/en/
 <a name="installation"/>
 
 ### Prerequisites
-The plugin requires python3 and some python modules. And of course you already have to have munin-node on the host.
+The plugin requires python3 and some python modules. And of course you already have munin-node and docker on the host.
 
 on Ubuntu 22.04 (or higher):
 ```
